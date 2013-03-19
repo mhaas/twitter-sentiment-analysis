@@ -1,6 +1,6 @@
 # our stuff -- mhaas
 src/crawler/credentials.py
-
+data/tweets/*.csv
 *.py[cod]
 
 # C extensions
