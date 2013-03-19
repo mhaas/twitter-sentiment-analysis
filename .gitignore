@@ -1,3 +1,6 @@
+# our stuff -- mhaas
+src/crawler/credentials.py
+
 *.py[cod]
 
 # C extensions
