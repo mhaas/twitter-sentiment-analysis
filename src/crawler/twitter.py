@@ -15,7 +15,9 @@ auth.set_access_token(access_key, access_secret)
 api = tweepy.API(auth)
 
 
-
+"""
+CustomStreamListener dumps received tweets to disk as CSV files.
+"""
 class CustomStreamListener(tweepy.StreamListener):
 
 
@@ -69,12 +71,10 @@ cur = datetime.datetime.now().isoformat()
 sl = CustomStreamListener("tweets-%s.csv" % cur, api)
 sapi = tweepy.streaming.Stream(auth, sl)
 
-# Ungefaehr DE - Format der Koordination entspricht nicht OSM BB?
-"""
-The first two sets of numbers(-80.419922,32.528289) specify the Southwestern corner of one's "bounding box," in longitude/latitude, which is the location one is trying to grab tweets from within. 
-"""
 # http://www.findlatitudeandlongitude.com/
-# ungefaehr DE
+# Approximately DE
+# twitter streaming API has language filter, but not yet operational as of 2013-03-19.
+# word on the street is that the language detector is somewhat broken
 sapi.filter(locations=[7.4, 48, 12.5, 54.9])
 
 
@@ -82,3 +82,4 @@ sapi.filter(locations=[7.4, 48, 12.5, 54.9])
 sapi.sample()
 
 sl.close()
+
