@@ -25,7 +25,7 @@ class TweetIDExtractor(BaseExtractor):
         pass
 
     def extractFeatures(self, tweet):
-        ret = OrderedDict
+        ret = OrderedDict()
         ret["tweetID"] = tweet.tweetID
         return ret
 
