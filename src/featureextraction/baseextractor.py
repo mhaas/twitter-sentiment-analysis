@@ -1,6 +1,7 @@
 #-*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
+from collections import OrderedDict
 
 class BaseExtractor(object):
 
@@ -24,7 +25,9 @@ class TweetIDExtractor(BaseExtractor):
         pass
 
     def extractFeatures(self, tweet):
-        return tweet.tweetID
+        ret = OrderedDict
+        ret["tweetID"] = tweet.tweetID
+        return ret
 
     def getFields(self):
         return ["tweetID"]
