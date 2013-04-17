@@ -5,7 +5,7 @@ from extractors.baseextractor import TweetIDExtractor
 from extractors.statsextractor import TokenCountExtractor,NormalizedSentimentScoreExtractor,SmileyCountExtractor,DefiniteSentimentExtractor
 from extractors.wordvectorextractor import WordVectorExtractor,HashtagVectorExtractor
 from extractors.textpatternextractor import RepeatedCharacterExtractor,CapsExtractor
-from tweetloader import Tweet
+import tweetloader
 from collections import OrderedDict
 import os
 import csv
@@ -40,7 +40,7 @@ def cleanForARFF(token):
     token = token.replace('"', "--DOUBLEQUOTE--")
     return token
 
-def run(baseDir, outFile):
+def run(tweetIterable, outFile, extractors):
     fields = []
     arffFH = codecs.open(outFile + ".arff", "w", "utf-8")
     arffFH.write("@relation twitter-%s\n" % datetime.now().isoformat())
@@ -71,30 +71,28 @@ def run(baseDir, outFile):
         outFH.write(",")
     outFH.write("\n")
 
-    for (dirpath, dirnames, filenames) in os.walk(baseDir):
-        for directory in dirnames:
-            logging.info("Now processing dir %s", os.path.join(dirpath,directory))
-            t = Tweet(baseDir, directory)
-            featureVector = OrderedDict()
-            for e in extractors:
-                featureVector.update(e.extractFeatures(t))
+    for t in tweetIterable:
+        featureVector = OrderedDict()
+        for e in extractors:
+            featureVector.update(e.extractFeatures(t))
             o.writerow(featureVector)
-            noComma = True
-            for item in featureVector.values():
-                if noComma:
-                    noComma = False
-                else:
-                    arffFH.write(",")
-                arffFH.write(str(item))
-            arffFH.write("\n")
+        noComma = True
+        for item in featureVector.values():
+            if noComma:
+                noComma = False
+            else:
+                arffFH.write(",")
+            arffFH.write(str(item))
+        arffFH.write("\n")
     outFH.close()
     arffFH.close()
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print >> sys.stderr, "Usage: script.py baseDir"
+    if len(sys.argv) < 3:
+        print >> sys.stderr, "Usage: script.py baseDir outFile"
         sys.exit(1)
-    run(sys.argv[1], "out.csv")
+    iterable = tweetloader.loadTweets(sys.argv[1])
+    run(iterable, sys.argv[2], extractors)
         
 
 
