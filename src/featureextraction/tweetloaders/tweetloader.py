@@ -57,6 +57,11 @@ class Tweet(object):
     def __str__(self):
         return "Tweet: %s, %s" % (self.tweetID, self.tweet)
 
+def loadTweets(baseDir):
+    for (dirpath, dirnames, filenames) in os.walk(baseDir):
+        for directory in dirnames:
+            t = Tweet(baseDir, directory)
+            yield t
 
 if __name__ == "__main__":
     import sys
