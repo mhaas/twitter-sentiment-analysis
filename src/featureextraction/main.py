@@ -1,10 +1,10 @@
 #/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from baseextractor import TweetIDExtractor
-from statsextractor import TokenCountExtractor,NormalizedSentimentScoreExtractor,SmileyCountExtractor
-from wordvectorextractor import WordVectorExtractor,HashtagVectorExtractor
-from textpatternextractor import RepeatedCharacterExtractor,CapsExtractor
+from extractors.baseextractor import TweetIDExtractor
+from extractors.statsextractor import TokenCountExtractor,NormalizedSentimentScoreExtractor,SmileyCountExtractor,DefiniteSentimentExtractor
+from extractors.wordvectorextractor import WordVectorExtractor,HashtagVectorExtractor
+from extractors.textpatternextractor import RepeatedCharacterExtractor,CapsExtractor
 from tweetloader import Tweet
 from collections import OrderedDict
 import os
@@ -23,6 +23,7 @@ extractors.append(TweetIDExtractor())
 extractors.append(TokenCountExtractor())
 extractors.append(NormalizedSentimentScoreExtractor())
 extractors.append(SmileyCountExtractor())
+extractors.append(DefiniteSentimentExtractor())
 extractors.append(RepeatedCharacterExtractor())
 extractors.append(CapsExtractor())
 extractors.append(WordVectorExtractor())
