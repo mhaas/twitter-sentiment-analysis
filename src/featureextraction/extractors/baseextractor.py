@@ -43,8 +43,8 @@ class TweetIDExtractor(BaseExtractor):
         return ["tweetID"]
 
     # TODO - can weka handle big numbers?
-    #def getFieldType(self, field):
-    #    return "string"
+    def getFieldType(self, field):
+        return "string"
 
     
 
