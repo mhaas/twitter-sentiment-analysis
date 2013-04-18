@@ -3,12 +3,21 @@
 from __future__ import unicode_literals
 from collections import OrderedDict
 
-class BaseExtractor(object):
 
+class BaseExtractor(object):
+    """Base class for all extractors.
+
+    Extractors must override
+    * __init__
+    * extractFeatures
+    * getFields
+    Extractors may override getFieldType
+    if the ARFF field data type is not "real".
+    """
     def __init__(self):
         raise NotImplementedError
 
-  # always returns collections.OrderedDict
+    # always returns collections.OrderedDict
     def extractFeatures(self, tweet):
         raise NotImplementedError
 
@@ -21,6 +30,7 @@ class BaseExtractor(object):
 
 
 class TweetIDExtractor(BaseExtractor):
+    """Extracts Tweet ID."""
     def __init__(self):
         pass
 
