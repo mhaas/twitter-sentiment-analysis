@@ -1,10 +1,13 @@
 #/usr/bin/python
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 from extractors.baseextractor import TweetIDExtractor
 from extractors.statsextractor import TokenCountExtractor,NormalizedSentimentScoreExtractor,SmileyCountExtractor,DefiniteSentimentExtractor
 from extractors.wordvectorextractor import WordVectorExtractor,HashtagVectorExtractor
 from extractors.textpatternextractor import RepeatedCharacterExtractor,CapsExtractor
+from extractors.langextractor import LDIGLangExtractor
 from tweetloaders import tweetloader
 from collections import OrderedDict
 import os
@@ -16,10 +19,13 @@ import sys
 
 logging.basicConfig(filename="main.log", level=logging.DEBUG)
 
+ldig_model = "../../3rdparty/ldig/models/model.latin/"
+
 # configure extractors
 # order is important for WEKA/ARFF
 extractors = []
 extractors.append(TweetIDExtractor())
+extractors.append(LDIGLangExtractor(ldig_model))
 extractors.append(TokenCountExtractor())
 extractors.append(NormalizedSentimentScoreExtractor())
 extractors.append(SmileyCountExtractor())
@@ -44,8 +50,6 @@ def run(tweetIterable, outFile, extractors):
     fields = []
     arffFH = codecs.open(outFile + ".arff", "w", "utf-8")
     arffFH.write("@relation twitter-%s\n" % datetime.now().isoformat())
-    for e in extractors:
-        fields.extend(e.getFields())
     for e in extractors:
         curFields = e.getFields()
         fields.extend(curFields)
@@ -75,7 +79,7 @@ def run(tweetIterable, outFile, extractors):
         featureVector = OrderedDict()
         for e in extractors:
             featureVector.update(e.extractFeatures(t))
-            o.writerow(featureVector)
+        o.writerow(featureVector)
         noComma = True
         for item in featureVector.values():
             if noComma:
