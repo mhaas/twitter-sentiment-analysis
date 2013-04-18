@@ -28,19 +28,7 @@ class Tweet(object):
         fh.close() 
 
     def _loadTweetSentiment(self):
-        fName = "tweet_sentiment"
-        path = os.path.join(self.baseDir, self.tweetID, fName)
-        # will    W       neutral
-        fh = open(path, "r")
-        reader = csv.reader(fh, delimiter="\t".encode("ascii"), quoting=csv.QUOTE_NONE)
-        self.tokens = []
-        self.tokenTypes = []
-        self.tokenSentiment = []
-        for row in reader:
-            self.tokens.append(row[0])
-            self.tokenTypes.append(row[1])
-            self.tokenSentiment.append(row[2])
-        fh.close()
+        loadTweetSentiment(self)
 
     # {u'pos_smileys': 0.0, u'pos_tokens': 0.0, u'tokens': 22.0, u'overall_sentiment_score': 0.0, u'neutral_tokens': 22.0, u'neg_tokens': 0.0, u'neutral_smileys': 0.0, u'neg_smileys': 0.0, u'normalized_sentiment_score': 0.0}
     def _loadTweetStats(self):
@@ -56,6 +44,24 @@ class Tweet(object):
 
     def __str__(self):
         return "Tweet: %s, %s" % (self.tweetID, self.tweet)
+
+def loadTweetSentiment(tweet, fh=None):
+    if fh is None:
+        fName = "tweet_sentiment"
+        path = os.path.join(self.baseDir, self.tweetID, fName)
+        # will    W       neutral
+        fh = open(path, "r")
+    reader = csv.reader(fh, delimiter="\t".encode("ascii"), quoting=csv.QUOTE_NONE)
+    tweet.tokens = []
+    tweet.tokenTypes = []
+    tweet.tokenSentiment = []
+    for row in reader:
+        tweet.tokens.append(row[0])
+        tweet.tokenTypes.append(row[1])
+        tweet.tokenSentiment.append(row[2])
+    fh.close()
+    return tweet
+
 
 def loadTweets(baseDir):
     for (dirpath, dirnames, filenames) in os.walk(baseDir):

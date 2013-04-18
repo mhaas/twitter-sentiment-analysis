@@ -2,11 +2,16 @@
 
 from __future__ import unicode_literals
 
+import tweetloader
 import os
 import csv
 import codecs
 from extractors.statsextractor import DefiniteSentimentExtractor as sent
 import hashlib
+import socket
+import json
+from StringIO import StringIO
+
 class GoldTweet(object):
 
     def __init__(self,tweetID):
@@ -40,6 +45,7 @@ def loadDaiTweets(csvFile):
         t = GoldTweet(row[2].decode("utf-8"))
         t.tweet = row[3].decode("utf-8")
         se = row[0].decode("utf-8")
+        getRemoteStats(t)
         t.goldStats = { "sentiment" : _getDaiAnnotation(se), "numberagreed" : int(row[1]) }
         yield t
     fh.close() 
@@ -85,20 +91,42 @@ def loadCuiTweets(csvFile, annotationsFile, lang="de"):
             tweet = row[5].decode("utf-8")
             t = GoldTweet(hashlib.md5((tweet + date).encode("utf-8")).hexdigest())
             t.tweet = tweet
+            getRemoteStats(t)
             t.goldStats = {"sentiment" : sentiment[count],
                 "numberagreed": numberagreed[count]}
             yield t
         count += 1
+
+def getRemoteStats(tweetObj):
+    #my $remote_host="localhost";
+    #my $remote_port="1234";
+
+    #my $socket = IO::Socket::INET->new("$remote_host:$remote_port");
+
+    #print $socket "OMG!!!! :-)  Hallo Welt!! Schlecht!\n";
+    #my $line = <$socket>;
+    #print $line."\n";
+    #create an INET, STREAMing socket
+    s = socket.socket(
+        socket.AF_INET, socket.SOCK_STREAM)
+    #now connect to the web server on port 80
+    # - the normal http port
+    s.connect(("localhost", 1234))
+    fh = s.makefile()
+    assert type(tweetObj.tweet) == unicode
+    fh.write(tweetObj.tweet.encode("utf-8"))
+    fh.write("\n\n")
+    fh.flush()
+    l = fh.readline().decode("utf-8")
+    stats = json.loads(l)
+    print stats
+    tweetObj.stats = stats
+    statsFH = StringIO("".join(stats["tweet"]).encode("utf-8"))
+    tweetloader.loadTweetSentiment(tweetObj, fh=statsFH)
+    del stats["tweet"]
+    return tweetObj
+
     
 
-if __name__ == "__main__":
-    import sys
-    if len(sys.argv) < 3:
-        print >> sys.stderr, "Usage: script.py csvFile annotationsFile"
-        sys.exit(1)
-    csvFile = sys.argv[1]
-    annotationsFile = sys.argv[2]
-    for tweet in loadCuiTweets(csvFile, annotationsFile):
-        print tweet.tweet
-        print tweet.goldStats
+
 
