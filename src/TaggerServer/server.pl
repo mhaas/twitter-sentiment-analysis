@@ -14,7 +14,7 @@ use JSON;
 my $csv = Text::CSV->new({binary=>1,sep_char=>"\t"}) or die;
 my $trie = Tree::Trie->new;
 
-foreach my $file (<GermanPolarityClues-2012/GermanPolarityClues-*-Lemma-21042012.tsv>) {
+foreach my $file (<data/GermanPolarityClues-2012/GermanPolarityClues-*-Lemma-21042012.tsv>) {
 	open my $io, "<", $file or die;
 	while (my $row = $csv->getline($io)) {
 		my @fields = @$row;
@@ -26,7 +26,7 @@ foreach my $file (<GermanPolarityClues-2012/GermanPolarityClues-*-Lemma-21042012
 	close $io;
 }
 
-open SMILE, "<", "smileys";
+open SMILE, "<", "data/smileys";
 my $smileys = undef;
 while(<SMILE>) {
 	chomp;
