@@ -5,7 +5,7 @@ from extractors.baseextractor import TweetIDExtractor
 from extractors.statsextractor import TokenCountExtractor,NormalizedSentimentScoreExtractor,SmileyCountExtractor,DefiniteSentimentExtractor
 from extractors.wordvectorextractor import WordVectorExtractor,HashtagVectorExtractor
 from extractors.textpatternextractor import RepeatedCharacterExtractor,CapsExtractor
-import tweetloader
+from tweetloaders import tweetloader
 from collections import OrderedDict
 import os
 import csv
