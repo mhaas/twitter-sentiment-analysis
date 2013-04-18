@@ -7,7 +7,7 @@ from collections import OrderedDict
 
 
 class BasePatternExtractor(BaseExtractor):
-"""Extracts boolean features from a tweet based on regular expression.
+    """Extracts boolean features from a tweet based on regular expression.
 
     If the regular expression supplied by the subclass matches,
     it the corresponding attribute is set to "Y", "N" otherwise.
@@ -60,7 +60,7 @@ class CapsExtractor(BasePatternExtractor):
     then the "caps_lock_min_3_characters" field is set to "Y".
     """
     
-     def __init__(self):
+    def __init__(self):
         self.regexes = OrderedDict()
         # regex is not optimal, ignores bmp
         self.regexes["caps_lock_min_3_characters"] = re.compile(ur"[A-Z]{3}")
