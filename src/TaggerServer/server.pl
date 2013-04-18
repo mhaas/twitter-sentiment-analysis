@@ -36,7 +36,7 @@ while(<SMILE>) {
 close SMILE;
 
 
-my $pid = open2 my $out, my $in, "/usr/bin/java -classpath \$CLASSPATH:ark-tweet-nlp-0.3.2.jar SentimentTagger";
+my $pid = open2 my $out, my $in, "/usr/bin/java -classpath \$CLASSPATH:ark-tweet-nlp-0.3.2.jar:javabin/ SentimentTagger";
 die "$0: open2: $!" unless defined $pid;
 
 print "Started Tagger\n";
