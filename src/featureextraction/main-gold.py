@@ -6,13 +6,14 @@ import logging
 logging.basicConfig(filename="gold-main.log", level=logging.DEBUG)
 
 import sys
-import goldtweetloader
+from tweetloaders import goldtweetloader
 from extractors.baseextractor import TweetIDExtractor
 #from extractors.statsextractor import TokenCountExtractor,NormalizedSentimentScoreExtractor,SmileyCountExtractor,DefiniteSentimentExtractor
 #from extractors.wordvectorextractor import WordVectorExtractor,HashtagVectorExtractor
 from extractors.textpatternextractor import RepeatedCharacterExtractor,CapsExtractor
 
 from main import cleanForARFF,run
+import main
 
 # configure extractors
 # order is important for WEKA/ARFF
@@ -51,7 +52,7 @@ if __name__ == "__main__":
     else:
         printUsage
         sys.exit(1)
-    run(loader, "out-%s.csv" % typ, extractors)
+    run(loader, "out-%s.csv" % typ, main.extractors)
         
 
 
