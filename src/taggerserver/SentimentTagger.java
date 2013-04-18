@@ -67,7 +67,7 @@ public class SentimentTagger {
 
 
 	public static void main(String[] args) throws IOException {
-		String modelFilename = "/home/students/wittl/textmining/123/java/cmu/arktweetnlp/model.20120919";
+		String modelFilename = "data/model.20120919";
 
 		SentimentTagger tagger = new SentimentTagger();
 		tagger.loadModel(modelFilename);
