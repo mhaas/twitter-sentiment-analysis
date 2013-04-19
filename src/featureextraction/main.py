@@ -1,6 +1,12 @@
 #/usr/bin/python
 # -*- coding: utf-8 -*-
 
+"""Main entry point for feature extraction.
+
+Given directory with preprocessed tweets, extracts features from tweets
+and saves as CSV and ARFF files.
+"""
+
 from __future__ import unicode_literals
 
 from extractors.baseextractor import TweetIDExtractor
@@ -37,6 +43,17 @@ extractors.append(HashtagVectorExtractor())
 
 
 def cleanForARFF(token):
+    """Cleans attribute names for use with WEKA.
+
+    Some characters such as single quotes need to be
+    replaced or escaped to prevent errors when
+    loading the file into WEKA.
+    
+    Args:
+        token: attribute name string to be cleaned
+
+    Returns: clean attribute name string
+    """
     token = token.strip()
     if token == "":
         return "--EMPTYSTRING--"
@@ -47,6 +64,14 @@ def cleanForARFF(token):
     return token
 
 def run(tweetIterable, outFile, extractors):
+    """Extracts features from tweets.
+
+    Args:
+        - tweetIterable: iterable containing Tweet objects
+        - outFile: where CSV and ARFF data is stored,
+            ARFF is stored with suffix ".arff"
+        - extractors: list of extractor objects
+    """
     fields = []
     arffFH = codecs.open(outFile + ".arff", "w", "utf-8")
     arffFH.write("@relation twitter-%s\n" % datetime.now().isoformat())
@@ -76,6 +101,7 @@ def run(tweetIterable, outFile, extractors):
     outFH.write("\n")
 
     for t in tweetIterable:
+        logging.debug("Processing tweet %s", t.tweetID)
         featureVector = OrderedDict()
         for e in extractors:
             featureVector.update(e.extractFeatures(t))

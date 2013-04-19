@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+"""Extracts language from tweet."""
+
 from __future__ import unicode_literals
 
 from baseextractor import BaseExtractor
@@ -9,11 +11,22 @@ import ldig.server
 
 
 class LDIGLangExtractor(BaseExtractor):
+    """Uses LDIG language classifier to determine language for tweet.
+    
+    Download LDIG here: https://github.com/shuyo/ldig
 
-
+    Fields/Types:
+        - lang_ldig/nominal: {de,..} - depends on LDIG model
+    """
+    
     def __init__(self, model):
-       self.d = ldig.server.Detector(model)
-       self.field = "lang_ldig"
+    """Constructor:
+        
+        Args:
+            model: string, LDIG model directory
+    """
+        self.d = ldig.server.Detector(model)
+        self.field = "lang_ldig"
 
     def extractFeatures(self, tweet):
         ret = OrderedDict()

@@ -1,13 +1,28 @@
 # -*- coding: utf-8 -*-
 
+"""Extractors for feature originating from sentiment stats.
+
+    Sentiment stats come from the preprocessing module,
+    see taggerserver and tweetloaders.
+"""
+
 from __future__ import unicode_literals
 
 from baseextractor import BaseExtractor
 from collections import OrderedDict
-#{u'pos_smileys': 0.0, u'pos_tokens': 0.0, u'tokens': 22.0, u'overall_sentiment_score': 0.0, u'neutral_tokens': 22.0, u'neg_tokens': 0.0, u'neutral_smileys': 0.0, u'neg_smileys': 0.0, u'normalized_sentiment_score': 0.0}
+
 
 class BaseStatsExtractor(BaseExtractor):
+    """Base class for stats extractors.
 
+    All stats extractors use the tweet.stats member.
+    Child classes declare which fields they extract
+    from tweet.stats and this class handles the
+    extraction.
+    
+    Child classes must set self.fields to a list of
+    fields to be extracted from tweet.stats.
+    """
     def extractFeatures(self, tweet):
         res = OrderedDict()
         for f in self.fields:
@@ -19,17 +34,32 @@ class BaseStatsExtractor(BaseExtractor):
 
 
 class TokenCountExtractor(BaseStatsExtractor):
-
+    """Extracts token count.
+    
+    Fields/types:
+        - tokens/numeric
+    """
     def __init__(self):
         self.fields = ["tokens"]
 
 class NormalizedSentimentScoreExtractor(BaseStatsExtractor):
-
+    """Extracts normalized sentiment score.
+    
+    Fields/types:
+        - normalized_sentiment_score/numeric
+    """
     def __init__(self):
         self.fields = ["normalized_sentiment_score"]
 
 
 class SmileyCountExtractor(BaseStatsExtractor):
+    """Extracts emoticon counts.
+
+    Fields/types:
+        - neutral_smileys/numeric
+        - neg_smileys/numeric
+        - pos_smileys/numeric
+    """
     def __init__(self):
         self.fields = ["neutral_smileys", "neg_smileys", "pos_smileys"]
 
@@ -37,8 +67,16 @@ class SmileyCountExtractor(BaseStatsExtractor):
 class DefiniteSentimentExtractor(BaseExtractor):
     """Gives Sentiment as "pos", "neg" or "neut".
 
-        Unlike other extractors, this extractor does not return a numeric value.
-        It returns a definite value from set {"pos", "neg", "neut"}.
+        Two sentiment values are returned, one based on emoticons
+        and one based on lexicon-backed sentiment analysis done
+        by preprocessing.
+
+        Unlike other extractors,
+        this extractor does not return a numeric value.
+    
+        Fields/types:
+            - def_sentiment_smiley/nominal {pos, neg, neut}
+            - def_sentiment_analysis/nominal {pos, neg, neut}
     """
     POS = "pos"
     NEG = "neg"

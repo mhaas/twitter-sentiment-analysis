@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 from collections import OrderedDict
 
+"""Basic feature extractors.""" 
 
 class BaseExtractor(object):
     """Base class for all extractors.
@@ -19,13 +20,40 @@ class BaseExtractor(object):
 
     # always returns collections.OrderedDict
     def extractFeatures(self, tweet):
+        """Extracts Features from tweet.
+
+        Must return OrderedDict object.
+        Args:
+            - tweet: Tweet object
+        Returns:
+            - OrderedDict
+        """
         raise NotImplementedError
 
     def getFields(self):
+        """Returns field names for this extractor.
+
+        This methods returns the attribute names for
+        the features extracted in this class.
+        
+        Returns:
+            list of attribute name strings
+        """
         raise NotImplementedError
    
     # ARFF datatype declaration
     def getFieldType(self, field):
+        """Returns data type for given field
+
+        Fields can have different fields and need
+        to be declared accordingly. Valid field types
+        can be found in the ARFF spec.
+
+        Returns:
+            field type as string
+        Raises:
+            ValueError: if unknown field is passed in
+        """
         return "real"
 
 
@@ -42,7 +70,6 @@ class TweetIDExtractor(BaseExtractor):
     def getFields(self):
         return ["tweetID"]
 
-    # TODO - can weka handle big numbers?
     def getFieldType(self, field):
         return "string"
 

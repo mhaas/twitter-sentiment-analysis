@@ -1,5 +1,7 @@
 #-*- coding: utf-8 -*-
 
+"""Loads tweets from Gold standard data sets."""
+
 from __future__ import unicode_literals
 
 import tweetloader
@@ -13,8 +15,19 @@ import json
 from StringIO import StringIO
 
 class GoldTweet(object):
+    """Tweet object.
+    
+    Modelled after Tweet class, but does not load
+    data on its own.
+    TODO: needs refactoring.
+    """
 
     def __init__(self,tweetID):
+        """Constructor.
+
+        Args:
+            - tweetID: string, ID of tweet
+        """
         self.tweetID = tweetID
         self.tweet = None
 
@@ -22,6 +35,7 @@ class GoldTweet(object):
         return "%s: %s" % (self.tweetID, self.tweet)
 
 def _getDaiAnnotation(token):
+    """Normalizes annotations from DAI data set."""
     #"positive", "negative", "neutral" or "na" (for irrelevant/unclear).    
     if token == "positive":
         return sent.POS
@@ -36,6 +50,13 @@ def _getDaiAnnotation(token):
 
 
 def loadDaiTweets(csvFile):
+    """Loads tweets from CSV file provided by DAI.
+    
+    Args:
+        - csvFile: string, path to file
+    Yields:
+        - tweet objects
+    """
     fh = open(csvFile, "r")
     reader = csv.reader(fh, delimiter='\t'.encode('utf-8'))
     # skip header
@@ -51,6 +72,7 @@ def loadDaiTweets(csvFile):
     fh.close() 
 
 def _getCuiAnnotation(token):
+    """Normalizes annotations from CUI data set."""
     if token == "&":
         # not sure
         return None
@@ -64,6 +86,15 @@ def _getCuiAnnotation(token):
         raise ValueError("Unknown annotation: %s" % token)
 
 def loadCuiTweets(csvFile, annotationsFile, lang="de"):
+    """Loads tweets from CSV files provided by CUI.
+    
+    Args:
+        - csvFile: string, file containing tweets.
+        - annotationsFile: string, file containing annotations.
+        - lang: which language to load, see file for available options.
+    Yields:
+        Tweet objects.
+    """
     fh = open(annotationsFile)
     reader = csv.reader(fh, delimiter="\t".encode("utf-8"))
     sentiment = []
@@ -98,20 +129,28 @@ def loadCuiTweets(csvFile, annotationsFile, lang="de"):
         count += 1
 
 def getRemoteStats(tweetObj):
-    #my $remote_host="localhost";
-    #my $remote_port="1234";
+    """Fetches stats from taggerserver.
 
-    #my $socket = IO::Socket::INET->new("$remote_host:$remote_port");
+    Taggerserver implements the preprocessing.
+    tweetObj.tweet is sent to the TaggerServer,
+    which returns a tagged version of the tweet
+    along with sentiment stats.
+    See tweetloader.loadTweetSentiment documentation for available stats.
 
-    #print $socket "OMG!!!! :-)  Hallo Welt!! Schlecht!\n";
-    #my $line = <$socket>;
-    #print $line."\n";
+    Args:
+        - tweetObj: Tweet object
+    Returns:
+        tweetObj with tokens, tags and stats
+    """
+    remote_host = "localhost";
+    remote_port = 1234;
+
     #create an INET, STREAMing socket
     s = socket.socket(
         socket.AF_INET, socket.SOCK_STREAM)
     #now connect to the web server on port 80
     # - the normal http port
-    s.connect(("localhost", 1234))
+    s.connect((remote_host, remote_port))
     fh = s.makefile()
     assert type(tweetObj.tweet) == unicode
     fh.write(tweetObj.tweet.encode("utf-8"))
@@ -119,7 +158,6 @@ def getRemoteStats(tweetObj):
     fh.flush()
     l = fh.readline().decode("utf-8")
     stats = json.loads(l)
-    print stats
     tweetObj.stats = stats
     statsFH = StringIO("".join(stats["tweet"]).encode("utf-8"))
     tweetloader.loadTweetSentiment(tweetObj, fh=statsFH)

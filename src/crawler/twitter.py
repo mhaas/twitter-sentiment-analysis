@@ -1,6 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# We need /usr/bin/env to make virtualenv work.
+
+"""This module dumps tweets originating from Germany to disk as CSV files.
+
+Tweets are obtained from the Twitter Streaming API via the "sample"
+endpoint with a "locations" filter set to a bounding box roughly
+covering Germany.
+
+Tweets are saved to disk as CSV files.
+
+API credentials are imported from credentials.py which needs
+to provide the following fields:
+    - consumer_key
+    - consumer_secret
+    - access_key
+    - access_key
+"""
+
 import tweepy
 import sys
 import csv
@@ -15,15 +31,11 @@ auth.set_access_token(access_key, access_secret)
 api = tweepy.API(auth)
 
 
-"""
-CustomStreamListener dumps received tweets to disk as CSV files.
-"""
 class CustomStreamListener(tweepy.StreamListener):
-
+    """CustomStreamListener dumps received tweets to disk as CSV files."""
 
     def __init__(self, outFile, api):
         self.api = api
-        # BEI DER MACHT VON GRAYSKULL
         self.encoding = "utf-8"
         self.fields = [ "user", "created_at", "source", "retweeted_status",
                         "id_str",

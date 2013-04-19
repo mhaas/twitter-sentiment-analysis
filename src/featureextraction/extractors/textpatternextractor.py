@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+
+"""Extracts features based on regular expressions."""
+
 from __future__ import unicode_literals
 
 from baseextractor import BaseExtractor
@@ -16,8 +19,8 @@ class BasePatternExtractor(BaseExtractor):
     with an OrderedDict object. Keys are attribute names,
     values are regular expression objects.
 
-    Tweets are matched against patterns with the search function,
-    not the match function.
+    Tweets are matched against patterns with the re.search function,
+    not the re.match function.
     """
 
     YES = "Y"
@@ -45,6 +48,9 @@ class RepeatedCharacterExtractor(BasePatternExtractor):
 
     If a character is repeated 3 times in a row as in "looool",
     then the "min_3_repeated_characters" field is set to "Y".
+
+    Fields/types:
+        min_3_repeated_characters/nominal {Y,N}
     """
 
     def __init__(self):
@@ -58,6 +64,9 @@ class CapsExtractor(BasePatternExtractor):
 
     If three consecutive uppercase characters are found, as in "OMGWTF",
     then the "caps_lock_min_3_characters" field is set to "Y".
+
+    Fields/types:
+        caps_lock_min_3_characters/nominal {Y,N}
     """
     
     def __init__(self):
