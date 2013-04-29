@@ -20,11 +20,11 @@ class LDIGLangExtractor(BaseExtractor):
     """
     
     def __init__(self, model):
-    """Constructor:
+        """Constructor:
         
-        Args:
-            model: string, LDIG model directory
-    """
+            Args:
+                model: string, LDIG model directory
+        """ 
         self.d = ldig.server.Detector(model)
         self.field = "lang_ldig"
 
