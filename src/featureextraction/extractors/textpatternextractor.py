@@ -57,7 +57,7 @@ class RepeatedCharacterExtractor(BasePatternExtractor):
         self.regexes = OrderedDict()
         # http://stackoverflow.com/questions/2039140/python-re-how-do-i-match-an-alpha-character
         # regex is not optimal, ignores bmp and has digits and underscore
-        self.regexes["min_3_repeated_characters"] = re.compile(ur"[^\W\d_]{3}")
+        self.regexes["min_3_repeated_characters"] = re.compile(ur"([^\W\d_])\1\1")
 
 class CapsExtractor(BasePatternExtractor):
     """Extracts a boolean feature for repeated uppercase characters.
@@ -72,6 +72,25 @@ class CapsExtractor(BasePatternExtractor):
     def __init__(self):
         self.regexes = OrderedDict()
         # regex is not optimal, ignores bmp
-        self.regexes["caps_lock_min_3_characters"] = re.compile(ur"[A-Z]{3}")
+        self.regexes["caps_lock_min_3_characters"] = re.compile(ur"([A-Z])\1\1")
 
 
+if __name__ == "__main__":
+    print "running some tests"
+    rpe = RepeatedCharacterExtractor()
+    regex = rpe.regexes["min_3_repeated_characters"] 
+    assert regex.search("aaa")
+    assert regex.search("AAA")
+    assert regex.search("bbbb")
+    assert regex.search("BBBBBB")
+    assert not regex.search("12")
+    assert not regex.search("aa")
+    assert not regex.search("abcdefg")
+    
+    ce = CapsExtractor()
+    regex = ce.regexes["caps_lock_min_3_characters"]
+    assert regex.search("AAAAAA")
+    assert not regex.search("AA")
+    assert not regex.search("ABCDFG")
+    print "done"
+    
