@@ -46,7 +46,6 @@ class TokenVectorExtractor(BaseExtractor):
             self.protoDict[cleaned] = 0
         self.words = frozenset(self.protoDict.keys())
         assert len(self.words) == len(self.protoDict.keys())
-        logging.debug("Got this many keys: %s" % len(self.protoDict.keys()))
 
     def extractFeatures(self, tweet):
         ret = OrderedDict()
@@ -63,7 +62,7 @@ class TokenVectorExtractor(BaseExtractor):
 # find . -name tweet -exec cat {} \; | tr ' ' '\n' | sort | uniq -c | sort -rn | head -n 1000 > hitlist.txt
 # awk -F" " '{ print $2 }' < hitlist-sorted.txt
 class WordVectorExtractor(TokenVectorExtractor):
-   """Extracts vector for (most common) words.
+    """Extracts vector for (most common) words.
 
     Words are loaded from ../../data/featureextraction/top-words.txt.
     Words starting with '#' are skipped as hashtags are handled in a different class.
@@ -75,13 +74,16 @@ class WordVectorExtractor(TokenVectorExtractor):
     Fields/types:
         - <word list>/numeric
     """
+
     def __init__(self):
         # skip hashtags to prevent duplicates with HashtagVectorExtractor
-        self._loadFrequentWords("../../data/featureextraction/top-words.txt", re.compile(ur"^#.*$"))
+        self._loadFrequentWords("../../data/featureextraction/hitlist-fixed.txt", re.compile(ur"^#.*$"))
+
 
 # grep '^#' hitlist.txt | head -n 100 > top-tags.txt
 class HashtagVectorExtractor(TokenVectorExtractor):
     """Extracts vector for (most common) hash tags.
+
     Hash tags are loaded from ../../data/featureextraction/top-tags.txt.
     The hash tag list is generated externally and typically contains the top 100
     common hash tags, sorted by frequency.
@@ -92,5 +94,5 @@ class HashtagVectorExtractor(TokenVectorExtractor):
         - <hash tag list>/numeric
     """
     def __init__(self):
-        self._loadFrequentWords("../../data/featureextraction/top-tags.txt")
+        self._loadFrequentWords("../../data/featureextraction/hitlist-hashtag-fixed.txt")
 
