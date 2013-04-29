@@ -118,7 +118,10 @@ def loadTweets(baseDir):
     """
     for (dirpath, dirnames, filenames) in os.walk(baseDir):
         for directory in dirnames:
-            t = Tweet(baseDir, directory)
+            # single-character top level dir?
+            if len(directory) == 1:
+                continue
+            t = Tweet(dirpath, directory)
             yield t
 
 if __name__ == "__main__":
