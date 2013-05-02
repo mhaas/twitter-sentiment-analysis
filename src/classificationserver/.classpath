@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="lib/httpcomponents-client-4.3-beta1/lib/commons-codec-1.6.jar"/>
+	<classpathentry kind="lib" path="lib/httpcomponents-client-4.3-beta1/lib/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/httpcomponents-client-4.3-beta1/lib/fluent-hc-4.3-beta1.jar"/>
+	<classpathentry kind="lib" path="lib/httpcomponents-client-4.3-beta1/lib/httpclient-4.3-beta1.jar"/>
+	<classpathentry kind="lib" path="lib/httpcomponents-client-4.3-beta1/lib/httpclient-cache-4.3-beta1.jar"/>
+	<classpathentry kind="lib" path="lib/httpcomponents-client-4.3-beta1/lib/httpcore-4.3-beta1.jar"/>
+	<classpathentry kind="lib" path="lib/httpcomponents-client-4.3-beta1/lib/httpmime-4.3-beta1.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-ajp-7.6.10.v20130312.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-annotations-7.6.10.v20130312.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-client-7.6.10.v20130312.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-continuation-7.6.10.v20130312.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-deploy-7.6.10.v20130312.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-http-7.6.10.v20130312.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-io-7.6.10.v20130312.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-jmx-7.6.10.v20130312.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-jndi-7.6.10.v20130312.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-overlay-deployer-7.6.10.v20130312.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-plus-7.6.10.v20130312.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-policy-7.6.10.v20130312.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-rewrite-7.6.10.v20130312.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-security-7.6.10.v20130312.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-server-7.6.10.v20130312.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-servlet-7.6.10.v20130312.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-servlets-7.6.10.v20130312.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-util-7.6.10.v20130312.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-webapp-7.6.10.v20130312.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-websocket-7.6.10.v20130312.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-xml-7.6.10.v20130312.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-distribution-7.6.10.v20130312/lib/servlet-api-2.5.jar"/>
+	<classpathentry kind="lib" path="lib/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/weka.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

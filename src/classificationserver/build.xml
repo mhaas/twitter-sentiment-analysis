@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="ClassificationServer">
+    <property environment="env"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.7"/>
+    <property name="source" value="1.7"/>
+    <path id="ClassificationServer.classpath">
+        <pathelement location="bin"/>
+        <pathelement location="lib/httpcomponents-client-4.3-beta1/lib/commons-codec-1.6.jar"/>
+        <pathelement location="lib/httpcomponents-client-4.3-beta1/lib/commons-logging-1.1.1.jar"/>
+        <pathelement location="lib/httpcomponents-client-4.3-beta1/lib/fluent-hc-4.3-beta1.jar"/>
+        <pathelement location="lib/httpcomponents-client-4.3-beta1/lib/httpclient-4.3-beta1.jar"/>
+        <pathelement location="lib/httpcomponents-client-4.3-beta1/lib/httpclient-cache-4.3-beta1.jar"/>
+        <pathelement location="lib/httpcomponents-client-4.3-beta1/lib/httpcore-4.3-beta1.jar"/>
+        <pathelement location="lib/httpcomponents-client-4.3-beta1/lib/httpmime-4.3-beta1.jar"/>
+        <pathelement location="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-ajp-7.6.10.v20130312.jar"/>
+        <pathelement location="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-annotations-7.6.10.v20130312.jar"/>
+        <pathelement location="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-client-7.6.10.v20130312.jar"/>
+        <pathelement location="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-continuation-7.6.10.v20130312.jar"/>
+        <pathelement location="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-deploy-7.6.10.v20130312.jar"/>
+        <pathelement location="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-http-7.6.10.v20130312.jar"/>
+        <pathelement location="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-io-7.6.10.v20130312.jar"/>
+        <pathelement location="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-jmx-7.6.10.v20130312.jar"/>
+        <pathelement location="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-jndi-7.6.10.v20130312.jar"/>
+        <pathelement location="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-overlay-deployer-7.6.10.v20130312.jar"/>
+        <pathelement location="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-plus-7.6.10.v20130312.jar"/>
+        <pathelement location="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-policy-7.6.10.v20130312.jar"/>
+        <pathelement location="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-rewrite-7.6.10.v20130312.jar"/>
+        <pathelement location="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-security-7.6.10.v20130312.jar"/>
+        <pathelement location="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-server-7.6.10.v20130312.jar"/>
+        <pathelement location="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-servlet-7.6.10.v20130312.jar"/>
+        <pathelement location="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-servlets-7.6.10.v20130312.jar"/>
+        <pathelement location="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-util-7.6.10.v20130312.jar"/>
+        <pathelement location="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-webapp-7.6.10.v20130312.jar"/>
+        <pathelement location="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-websocket-7.6.10.v20130312.jar"/>
+        <pathelement location="lib/jetty-distribution-7.6.10.v20130312/lib/jetty-xml-7.6.10.v20130312.jar"/>
+        <pathelement location="lib/jetty-distribution-7.6.10.v20130312/lib/servlet-api-2.5.jar"/>
+        <pathelement location="lib/json-simple-1.1.1.jar"/>
+        <pathelement location="lib/weka.jar"/>
+    </path>
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    <target depends="clean" name="cleanall"/>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src"/>
+            <classpath refid="ClassificationServer.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+    <target name="WekaWrapper">
+        <java classname="de.haas.classification.WekaWrapper" failonerror="true" fork="yes">
+            <classpath refid="ClassificationServer.classpath"/>
+        </java>
+    </target>
+    <target name="ServLet">
+        <java classname="de.haas.classification.ServLet" failonerror="true" fork="yes">
+            <classpath refid="ClassificationServer.classpath"/>
+        </java>
+    </target>
+    <target name="TestServLet">
+        <java classname="de.haas.classification.TestServLet" failonerror="true" fork="yes">
+            <classpath refid="ClassificationServer.classpath"/>
+        </java>
+    </target>
+</project>
