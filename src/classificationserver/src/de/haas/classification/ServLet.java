@@ -11,9 +11,12 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
+import java.net.InetSocketAddress;
+
 public class ServLet extends HttpServlet {
 
-	String MODEL = "/home/laga/java/ClassificationServer/data/zeror/full-de-zeror.model";
+	String MODEL = "/home/students/haas/dev/twitter-sentiment-analysis/data/models/def_sentiment_smiley/naive-bayes/full-de-naive-bayes.model";
+    //String MODEL = "/home/students/haas/dev/twitter-sentiment-analysis/data/models/def_sentiment_smiley/zeror/full-de-zeror.model";
 	WekaWrapper m;
 
 	public ServLet() {
@@ -66,7 +69,8 @@ public class ServLet extends HttpServlet {
 	}
 
 	public static void main(String[] args) throws Exception {
-		Server server = new Server(8080);
+        InetSocketAddress bound = new InetSocketAddress("localhost", 8090); 
+		Server server = new Server(bound);
 
 		ServletContextHandler context = new ServletContextHandler(
 				ServletContextHandler.SESSIONS);
