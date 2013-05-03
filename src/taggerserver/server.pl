@@ -41,7 +41,8 @@ die "$0: open2: $!" unless defined $pid;
 
 print "Started Tagger\n";
 my $server_port = "1234";
-my $server = IO::Socket::INET->new(LocalPort => $server_port,
+my $server = IO::Socket::INET->new(LocalHost => '127.0.0.1',
+                                LocalPort => $server_port,
                                 Type      => SOCK_STREAM,
                                 Reuse     => 1,
                                 Listen    => 10 )  # or SOMAXCONN
