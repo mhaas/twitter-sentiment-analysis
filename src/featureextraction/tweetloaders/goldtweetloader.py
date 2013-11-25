@@ -8,7 +8,7 @@ import tweetloader
 import os
 import csv
 import codecs
-from extractors.statsextractor import DefiniteSentimentExtractor as sent
+from featureextraction.extractors.statsextractor import DefiniteSentimentExtractor as sent
 import hashlib
 import socket
 import json
@@ -67,7 +67,11 @@ def loadDaiTweets(csvFile):
         t.tweet = row[3].decode("utf-8")
         se = row[0].decode("utf-8")
         getRemoteStats(t)
-        t.goldStats = { "sentiment" : _getDaiAnnotation(se), "numberagreed" : int(row[1]) }
+        sentiment = _getDaiAnnotation(se)
+        if not sentiment:
+            # can be None
+            continue 
+        t.goldStats = { "sentiment" : sentiment, "numberagreed" : int(row[1]) }
         yield t
     fh.close() 
 

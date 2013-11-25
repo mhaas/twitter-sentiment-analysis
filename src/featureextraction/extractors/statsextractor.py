@@ -84,8 +84,10 @@ class DefiniteSentimentExtractor(BaseExtractor):
     F_SMI = "def_sentiment_smiley"
     F_A = "def_sentiment_analysis"
 
-    def __init__(self):
-        pass
+    def __init__(self, forceValueSmiley=None, forceValueAnalysis=None): 
+        self.forceValueSmiley = forceValueSmiley
+        self.forceValueAnalysis = forceValueAnalysis
+
 
     def extractFeatures(self, tweet):
         ret = OrderedDict()
@@ -98,14 +100,19 @@ class DefiniteSentimentExtractor(BaseExtractor):
         else:
             ret[self.F_SMI] = self.NEU
         # ignore neutral smileys for now
-        
+        if self.forceValueSmiley:
+            ret[self.F_SMI] = self.forceValueSmiley
+
+ 
         # use results from sentiment analysis
         if tweet.stats["normalized_sentiment_score"] < 0:
             ret[self.F_A] = self.NEG
         elif tweet.stats["normalized_sentiment_score"] > 0:
             ret[self.F_A] = self.POS
         else:
-            ret[self.F_A] = self.NEU 
+            ret[self.F_A] = self.NEU
+        if self.forceValueAnalysis:
+            ret[self.F_A] = self.forceValueAnalysis 
         return ret
 
     def getFields(self):

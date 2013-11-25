@@ -13,7 +13,7 @@ logging.basicConfig(filename="main-gold.log", level=logging.DEBUG)
 import sys
 from tweetloaders import goldtweetloader
 #from extractors.baseextractor import TweetIDExtractor
-#from extractors.statsextractor import TokenCountExtractor,NormalizedSentimentScoreExtractor,SmileyCountExtractor,DefiniteSentimentExtractor
+from extractors.statsextractor import DefiniteSentimentExtractor
 #from extractors.wordvectorextractor import WordVectorExtractor,HashtagVectorExtractor
 #from extractors.textpatternextractor import RepeatedCharacterExtractor,CapsExtractor
 from extractors.goldextractor import GoldExtractor
@@ -59,7 +59,13 @@ if __name__ == "__main__":
         printUsage
         sys.exit(1)
     e = []
-    e.extend(main.extractors)
+    for extractor in main.extractors:
+        #if type(extractor) == DefiniteSentimentExtractor:
+        #    print "Replace DefiniteSentimentExtractor"
+            #se = DefiniteSentimentExtractor(forceValueSmiley="?")
+            #e.append(se)
+        #else:
+        e.append(extractor)        
     e.append(GoldExtractor())
     run(loader, "out-%s.csv" % typ, e)
         

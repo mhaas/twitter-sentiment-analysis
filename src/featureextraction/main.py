@@ -63,7 +63,7 @@ def cleanForARFF(token):
     token = token.replace('"', "--DOUBLEQUOTE--")
     return token
 
-def run(tweetIterable, outFile, extractors):
+def run(tweetIterable, outFile, extractors, writeCSV=False, close=True):
     """Extracts features from tweets.
 
     Args:
@@ -73,7 +73,10 @@ def run(tweetIterable, outFile, extractors):
         - extractors: list of extractor objects
     """
     fields = []
-    arffFH = codecs.open(outFile + ".arff", "w", "utf-8")
+    if hasattr(outFile, "write"):
+        arffFH = outFile
+    else:
+        arffFH = codecs.open(outFile + ".arff", "w", "utf-8")
     arffFH.write("@relation twitter-%s\n" % datetime.now().isoformat())
     for e in extractors:
         curFields = e.getFields()
@@ -91,21 +94,23 @@ def run(tweetIterable, outFile, extractors):
             arffFH.write(" %s\n" % e.getFieldType(f))
     arffFH.write("@data\n")
 
-    outFH = codecs.open(outFile, "w", "utf-8")
-    o = csv.DictWriter(outFH, fields, extrasaction="ignore")
-    # write header manually because unicode brokenness
-    #o.writeheader()
-    for f in fields:
-        outFH.write(f)
-        outFH.write(",")
-    outFH.write("\n")
+    if writeCSV:
+        outFH = codecs.open(outFile, "w", "utf-8")
+        o = csv.DictWriter(outFH, fields, extrasaction="ignore")
+        # write header manually because unicode brokenness
+        #o.writeheader()
+        for f in fields:
+            outFH.write(f)
+            outFH.write(",")
+        outFH.write("\n")
 
     for t in tweetIterable:
         logging.debug("Processing tweet %s", t.tweetID)
         featureVector = OrderedDict()
         for e in extractors:
             featureVector.update(e.extractFeatures(t))
-        o.writerow(featureVector)
+        if writeCSV:
+            o.writerow(featureVector)
         noComma = True
         for item in featureVector.values():
             if noComma:
@@ -114,8 +119,10 @@ def run(tweetIterable, outFile, extractors):
                 arffFH.write(",")
             arffFH.write(str(item))
         arffFH.write("\n")
-    outFH.close()
-    arffFH.close()
+    if writeCSV and close:
+        outFH.close()
+    if close:
+        arffFH.close()
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
